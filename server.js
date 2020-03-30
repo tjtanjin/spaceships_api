@@ -1,4 +1,11 @@
 require('dotenv').config()
+const https = require("https")
+const fs = require("fs")
+
+const options = {
+  key: fs.readFileSync("/opt/lampp/etc/ssl.key/private.key"),
+  cert: fs.readFileSync("/opt/lampp/etc/ssl.crt/certificate.crt")
+};
 
 const express = require('express')
 const app = express()
@@ -19,4 +26,4 @@ app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: false })); // support encoded bodies
 app.use('/api/v1', codeRouter)
 
-app.listen(801, () => console.log('server started'))
+https.createServer(options, app).listen(801);
